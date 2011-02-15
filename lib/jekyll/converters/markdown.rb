@@ -33,6 +33,10 @@ module Jekyll
          begin
            require 'pandoc-ruby'
            $pandoc_opts = []
+         rescue LoadError
+           STDERR.puts 'You are missing a library required for Markdown. Please run:'
+           STDERR.puts '  $ [sudo] gem install pandoc-ruby'
+           raise FatalException.new("Missing dependency: pandoc-ruby")
          end
         when 'rdiscount'
           begin
