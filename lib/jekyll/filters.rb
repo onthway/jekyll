@@ -5,6 +5,10 @@ module Jekyll
       TextileConverter.new.convert(input)
     end
 
+    def markdownize(input)
+      Maruku.new(input).to_html
+    end
+
     def date_to_string(date)
       date.strftime("%d %b %Y")
     end
