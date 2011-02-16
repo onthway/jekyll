@@ -10,22 +10,15 @@ module Jekyll
       return if @setup
       # Set the Markdown interpreter (and Maruku self.config, if necessary)
 
-      if @config['markdowns']
-         markdowns = @config['markdowns'].split(/\s*,\s*/)
-         markdowns.reverse!
-         supported = [ 'maruku', 'rdiscount', 'pandoc-ruby' ]
-          markdowns.each do |lib|
-            if supported.include?( lib )
+      if @config['pandoc']
               begin
+                lib = 'pandoc-ruby'
                 require lib
                 puts "#{lib} found"
                 @config['markdown'] = lib
               rescue LoadError => ex
                 puts "#{lib} not found, falling back to next choice."
               end
-            end
-          end
-          puts "markdown: " + @config['markdown'] + "."
        end
 
       case @config['markdown']
