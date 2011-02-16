@@ -3,7 +3,8 @@ module Jekyll
   class Site
     attr_accessor :config, :layouts, :posts, :pages, :static_files,
                   :categories, :exclude, :source, :dest, :lsi, :pygments,
-                  :permalink_style, :tags, :time, :future, :safe, :plugins
+                  :permalink_style, :tags, :time, :future, :safe, :plugins, :limit_posts
+
     attr_accessor :converters, :generators
 
     # Initialize the site
@@ -22,19 +23,26 @@ module Jekyll
       self.permalink_style = config['permalink'].to_sym
       self.exclude         = config['exclude'] || []
       self.future          = config['future']
+      self.limit_posts     = config['limit_posts'] || nil
 
       self.reset
       self.setup
     end
 
     def reset
-      self.time            = Time.parse(self.config['time'].to_s) || Time.now
+      self.time            = if self.config['time']
+                               Time.parse(self.config['time'].to_s)
+                             else
+                               Time.now
+                             end
       self.layouts         = {}
       self.posts           = []
       self.pages           = []
       self.static_files    = []
       self.categories      = Hash.new { |hash, key| hash[key] = [] }
       self.tags            = Hash.new { |hash, key| hash[key] = [] }
+
+      raise ArgumentError, "Limit posts must be nil or >= 1" if !self.limit_posts.nil? && self.limit_posts < 1
     end
 
     def setup
@@ -71,6 +79,7 @@ module Jekyll
       self.read
       self.generate
       self.render
+      self.cleanup
       self.write
     end
 
@@ -118,6 +127,9 @@ module Jekyll
       end
 
       self.posts.sort!
+
+      # limit the posts if :limit_posts option is set
+      self.posts = self.posts[-limit_posts, limit_posts] if limit_posts
     end
 
     def generate
@@ -139,6 +151,36 @@ module Jekyll
       self.tags.values.map { |ps| ps.sort! { |a, b| b <=> a} }
     rescue Errno::ENOENT => e
       # ignore missing layout dir
+    end
+    
+    # Remove orphaned files and empty directories in destination
+    #
+    # Returns nothing
+    def cleanup
+      # all files and directories in destination, including hidden ones
+      dest_files = []
+      Dir.glob(File.join(self.dest, "**", "*"), File::FNM_DOTMATCH) do |file|
+        dest_files << file unless file =~ /\/\.{1,2}$/
+      end
+
+      # files to be written
+      files = []
+      self.posts.each do |post|
+        files << post.destination(self.dest)
+      end
+      self.pages.each do |page|
+        files << page.destination(self.dest)
+      end
+      self.static_files.each do |sf|
+        files << sf.destination(self.dest)
+      end
+      
+      # adding files' parent directories
+      files.each { |file| files << File.dirname(file) unless files.include? File.dirname(file) }
+      
+      obsolete_files = dest_files - files
+      
+      FileUtils.rm_rf(obsolete_files)
     end
 
     # Write static files, pages and posts

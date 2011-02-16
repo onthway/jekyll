@@ -4,8 +4,8 @@ Gem::Specification.new do |s|
   s.rubygems_version = '1.3.5'
 
   s.name              = 'jekyll'
-  s.version           = '0.6.2'
-  s.date              = '2010-09-02'
+  s.version           = '0.10.0'
+  s.date              = '2010-12-16'
   s.rubyforge_project = 'jekyll'
 
   s.summary     = "A simple, blog aware, static site generator."
@@ -33,6 +33,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rr', [">= 4.2.1"])
   s.add_development_dependency('cucumber', [">= 4.2.1"])
   s.add_development_dependency('RedCloth', [">= 4.2.1"])
+  s.add_development_dependency('kramdown', [">= 0.12.0"])
 
   # = MANIFEST =
   s.files = %w[
@@ -67,10 +68,13 @@ Gem::Specification.new do |s|
     lib/jekyll/generators/pagination.rb
     lib/jekyll/layout.rb
     lib/jekyll/migrators/csv.rb
+    lib/jekyll/migrators/drupal.rb
+    lib/jekyll/migrators/marley.rb
     lib/jekyll/migrators/mephisto.rb
     lib/jekyll/migrators/mt.rb
     lib/jekyll/migrators/textpattern.rb
     lib/jekyll/migrators/typo.rb
+    lib/jekyll/migrators/wordpress.com.rb
     lib/jekyll/migrators/wordpress.rb
     lib/jekyll/page.rb
     lib/jekyll/plugin.rb
@@ -80,6 +84,7 @@ Gem::Specification.new do |s|
     lib/jekyll/tags/highlight.rb
     lib/jekyll/tags/include.rb
     test/helper.rb
+    test/source/.htaccess
     test/source/_includes/sig.markdown
     test/source/_layouts/default.html
     test/source/_layouts/simple.html
@@ -110,6 +115,7 @@ Gem::Specification.new do |s|
     test/source/category/_posts/2008-9-23-categories.textile
     test/source/contacts.html
     test/source/css/screen.css
+    test/source/deal.with.dots.html
     test/source/foo/_posts/bar/2008-12-12-topical-post.textile
     test/source/index.html
     test/source/sitemap.xml
@@ -120,9 +126,11 @@ Gem::Specification.new do |s|
     test/test_core_ext.rb
     test/test_filters.rb
     test/test_generated_site.rb
+    test/test_kramdown.rb
     test/test_page.rb
     test/test_pager.rb
     test/test_post.rb
+    test/test_rdiscount.rb
     test/test_site.rb
     test/test_tags.rb
   ]

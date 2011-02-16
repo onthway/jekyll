@@ -45,7 +45,7 @@ require_all 'jekyll/generators'
 require_all 'jekyll/tags'
 
 module Jekyll
-  VERSION = '0.6.2'
+  VERSION = '0.10.0'
 
   # Default options. Overriden by values in _config.yml or command-line opts.
   # (Strings rather symbols used for compatability with YAML).
@@ -71,6 +71,25 @@ module Jekyll
       'png_engine' => 'blahtex',
       'png_dir'    => 'images/latex',
       'png_url'    => '/images/latex'
+    },
+    'rdiscount'    => {
+      'extensions' => []
+    },
+    'kramdown'        => {
+      'auto_ids'      => true,
+      'footnote_nr'   => 1,
+      'entity_output' => 'as_char',
+      'toc_levels'    => '1..6',
+      'use_coderay'   => false,
+
+      'coderay' => {
+        'coderay_wrap'              => 'div',
+        'coderay_line_numbers'      => 'inline',
+        'coderay_line_number_start' => 1,
+        'coderay_tab_width'         => 4,
+        'coderay_bold_every'        => 10,
+        'coderay_css'               => 'style'
+      }
     }
   }
 
