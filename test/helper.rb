@@ -7,6 +7,7 @@ require 'RedCloth'
 require 'rdiscount'
 require 'kramdown'
 require 'redcarpet'
+require 'pandoc-ruby'
 
 require 'redgreen' if RUBY_VERSION < '1.9'
 require 'shoulda'
