@@ -1,3 +1,9 @@
+# This Fork No Longer Maintained
+
+For a better solution, see my [Jekyll Pandoc plugin](https://github.com/dsanson/jekyll-pandoc-plugin).
+
+# About this Fork
+
 This is a fork of [jekyll], a lightweight static website generator, adding support for [pandoc] via the [pandoc-ruby] gem. The modified version of jekyll lives on the `pandoc-ruby` branch. To get the goods,
 
     git clone git@github.com:dsanson/jekyll.git -b pandoc-ruby
